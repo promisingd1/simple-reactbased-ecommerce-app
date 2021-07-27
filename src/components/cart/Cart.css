@@ -1,0 +1,18 @@
+.cart {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  text-align: justify;
+  table-layout: fixed;
+  border: 1px solid lightgray;
+}
+
+td {
+  padding: 10px;
+}
+
+tr td:nth-child(2) {
+  text-align: right;
+}
