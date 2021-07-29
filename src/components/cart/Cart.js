@@ -34,15 +34,11 @@ const Cart = (props) => {
         <tbody>
           <tr>
             <td>Item Price</td>
-            <td>
-              <b>{formatNumber(itemTotal)}</b>
-            </td>
+            <td>{formatNumber(itemTotal)}</td>
           </tr>
           <tr>
             <td>Shipping Cost</td>
-            <td>
-              <b>{shippingCost}</b>
-            </td>
+            <td>{shippingCost}</td>
           </tr>
           <tr>
             <td>Tax (15% of Item Price):</td>
@@ -56,6 +52,7 @@ const Cart = (props) => {
           </tr>
         </tfoot>
       </table>
+      {props.children}
     </div>
   );
 };

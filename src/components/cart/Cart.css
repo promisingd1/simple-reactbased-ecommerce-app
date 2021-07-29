@@ -7,6 +7,7 @@ table {
   text-align: justify;
   table-layout: fixed;
   border: 1px solid lightgray;
+  margin-bottom: 1rem;
 }
 
 td {
@@ -15,4 +16,13 @@ td {
 
 tr td:nth-child(2) {
   text-align: right;
+}
+
+.button a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.button a:visited {
+  color: #000;
 }
