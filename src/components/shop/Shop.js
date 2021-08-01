@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import fakeData from "../../assets/fakeData";
-
 import "./Shop.css";
 import Product from "../product/Product";
 import Cart from "../cart/Cart";
-import { addToDatabaseCart } from "../../assets/utilities/databaseManager";
+import {
+  addToDatabaseCart,
+  getDatabaseCart,
+} from "../../assets/utilities/databaseManager";
 import { NavLink } from "react-router-dom";
 
 const Shop = () => {
@@ -12,13 +14,43 @@ const Shop = () => {
   const [product, setProduct] = useState(productArr);
   const [cart, setCart] = useState([]);
 
-  const addToCart = (product) => {
-    const newCart = [...cart, product];
-    setCart(newCart);
+  // Syncing cart sate with database
+  useEffect(() => {
+    // Getting data from the database
+    const cartItems = getDatabaseCart();
+    const cartItemsKey = Object.keys(cartItems);
 
-    // Saving the cart items to local storage
-    const matchedProduct = newCart.filter((item) => item.key === product.key);
-    const productCount = matchedProduct.length;
+    // Adding quantity property to product item
+    const cartProducts = cartItemsKey.map((key) => {
+      const product = fakeData.find((items) => items.key === key);
+      product.quantity = cartItems[key];
+      return product;
+    });
+    setCart(cartProducts);
+  }, []);
+
+  const addToCart = (product) => {
+    let productCount = 1;
+    let newCart;
+
+    // Checking if the product added in the cart already exists
+    const productAlreadyExist = cart.find((item) => item.key === product.key);
+
+    // Increasing product quantity with each when the product already found
+    if (productAlreadyExist) {
+      productCount = productAlreadyExist.quantity + 1;
+      productAlreadyExist.quantity = productCount;
+      const otherProduct = cart.filter(
+        (items) => items.key !== productAlreadyExist.key
+      );
+      newCart = [...otherProduct, productAlreadyExist];
+    } else {
+      product.quantity = 1;
+      newCart = [...cart, product];
+    }
+
+    // Updating the cart and saving it to database
+    setCart(newCart);
     addToDatabaseCart(product.key, productCount);
   };
 

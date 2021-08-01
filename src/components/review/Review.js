@@ -13,6 +13,7 @@ const Review = () => {
   const [cart, setCart] = useState([]);
   const [orderPlaced, setOrderPlaced] = useState(false);
 
+  // Syncing cart state with database
   useEffect(() => {
     // Getting cart items from local storage
     const cartItems = getDatabaseCart();
@@ -30,9 +31,9 @@ const Review = () => {
 
   // Removing Cart Items from the local storage and updating Cart
   const removeCartItem = (key) => {
-    removeFromDatabaseCart(key);
-    const newCartItems = cart.filter((cartItemKey) => cartItemKey !== key);
+    const newCartItems = cart.filter((cartItem) => cartItem.key !== key);
     setCart(newCartItems);
+    removeFromDatabaseCart(key);
   };
 
   // Cleaning Data base after order placement

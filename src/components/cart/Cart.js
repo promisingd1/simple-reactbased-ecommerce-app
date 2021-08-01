@@ -1,10 +1,14 @@
 import React from "react";
 import "./Cart.css";
 
-const Cart = (props) => {
-  // console.log(props.cart);
-  const cart = props.cart;
-  const itemTotal = cart.reduce((total, product) => total + product.price, 0);
+const Cart = ({ cart, children }) => {
+  // Calculating Item price
+  const itemTotal = cart.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  );
+
+  // Calculating shippping cost
   let shippingCost = 0;
   if (itemTotal > 30 && itemTotal <= 50) {
     shippingCost = 5;
@@ -14,10 +18,13 @@ const Cart = (props) => {
     shippingCost = 15;
   }
 
+  // Calculate tax
   const tax = (itemTotal * 15) / 100;
 
+  // Calculate totalprice
   const totalPrice = itemTotal + shippingCost + tax;
 
+  // Converting string to number
   function formatNumber(num) {
     const precision = num.toFixed(2);
     return Number(precision);
@@ -52,7 +59,10 @@ const Cart = (props) => {
           </tr>
         </tfoot>
       </table>
-      {props.children}
+      {
+        // Displaying dynamic button
+        children
+      }
     </div>
   );
 };
